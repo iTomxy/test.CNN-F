@@ -5,9 +5,6 @@ import cnnf
 
 class Clf:
     def __init__(self, args):
-        """mixed input of labeled & unlabeled
-        if i-th UNlabeled, then `in_labeled[i]` is a all zero vector
-        """
         # self.args = args
         self.in_images = tf.placeholder(
             "float32", [None, 224, 224, 3], name="input_images")
@@ -46,8 +43,8 @@ class Clf:
         return fc7, logit, pslab, acc
 
     def _add_loss(self, args):
-        # SemiMLabelSoftmaxLoss
-        with tf.name_scope("SemiMLabelSoftmaxLoss"):
+        # cross entropy
+        with tf.name_scope("xent"):
             loss_xent = tf.nn.softmax_cross_entropy_with_logits(labels=self.in_labels,
                                                                 logits=self.logit)
             loss_xent = tf.reduce_sum(loss_xent, axis=-1)

@@ -56,7 +56,8 @@ def test(model, loader):
             out = model(X)
             pred = out.argmax(dim=1)
             n_correct += pred.eq(Y.view_as(pred)).sum().item()
-    print("acc:", n_correct / len(loader.dataset))
+    acc = n_correct / len(loader.dataset)
+    return acc
 
 
 train_loader = torch.utils.data.DataLoader(
@@ -96,12 +97,15 @@ model = Net(args.n_class).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters())
 
-for epoch in range(args.epoch):
-    train(model, train_loader, optimizer, criterion)
-    test(model, test_loader)
 # for x, y in train_loader:
 #     print(x.size(), y.size())  # [n, 1, 28, 28], [64]
 #     break
+for epoch in range(args.epoch):
+    print("---", eopch, "---")
+    train(model, train_loader, optimizer, criterion)
+    acc = test(model, test_loader)
+    print("acc:", acc)
+    log_file.write("acc: {}\n".format(acc))
 
 
 log_file.flush()

@@ -20,8 +20,14 @@ MNIST, zooming into [224, 224, 3].
 
 # Result
 
+## tensorflow
+
 - iter 0: 0.12269999995827675
 - iter 450: 0.9907000076770782
+
+# pytorch
+
+- epoch 
 
 ![accuracy](accuracy.png)
 ![loss](loss.png)
@@ -29,6 +35,7 @@ MNIST, zooming into [224, 224, 3].
 # Environment
 
 - tensorflow 1.12.0
+- pytorch 1.4.0
 - cuda 9.0
 
 # Pre-trained Weights

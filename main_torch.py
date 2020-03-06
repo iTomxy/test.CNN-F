@@ -101,7 +101,7 @@ optimizer = optim.Adam(model.parameters())
 #     print(x.size(), y.size())  # [n, 1, 28, 28], [64]
 #     break
 for epoch in range(args.epoch):
-    print("---", eopch, "---")
+    print("---", epoch, "---")
     train(model, train_loader, optimizer, criterion)
     acc = test(model, test_loader)
     print("acc:", acc)

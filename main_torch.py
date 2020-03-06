@@ -55,7 +55,7 @@ def test(model, loader):
             X, Y = X.to(device), Y.to(device)
             out = model(X)
             pred = out.argmax(dim=1)
-            n_correct += pred.eq(target.view_as(pred)).sum().item()
+            n_correct += pred.eq(Y.view_as(pred)).sum().item()
     print("acc:", n_correct / len(loader.dataset))
 
 

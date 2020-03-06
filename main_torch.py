@@ -75,7 +75,7 @@ test_loader = torch.utils.data.DataLoader(
                        transforms.Resize([224, 224]),
                        transforms.ToTensor(),
                        transforms.Normalize((0.1307,), (0.3081,)),
-                       transforms.Lambda(lambda x: x.repeat(1, 3, 1, 1))
+                       transforms.Lambda(lambda x: x.repeat(3, 1, 1))
                    ])),
     batch_size=args.batch_size, shuffle=True)
 

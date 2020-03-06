@@ -13,6 +13,7 @@ parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
 parser.add_argument('--cnnf_weight', type=str,
                     default='/home/aistudio/data/data20371/vgg_net.mat',
                     help="CNN-F weights file path")
+parser.add_argument('--data_path', type=str, default="E:/iTom/dataset/")
 parser.add_argument('--log_path', type=str, default="log")
 parser.add_argument('--batch_size', type=int, default=64)
 parser.add_argument('--n_class', type=int, default=10)
@@ -59,25 +60,32 @@ def test(model, loader):
 
 
 train_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('../data', train=True, download=True,
-                    transform=transforms.Compose([
-                        transforms.ToTensor(),
-                        transforms.Normalize((0.1307,), (0.3081,))
-                    ])),
+    datasets.MNIST(args.data_path, train=True,  # download=True,
+                   transform=transforms.Compose([
+                       transforms.Resize([224, 224]),
+                       transforms.ToTensor(),
+                       transforms.Normalize((0.1307,), (0.3081,)),
+                       transforms.Lambda(lambda x: x.repeat(3, 1, 1))
+                   ])),
     batch_size=args.batch_size, shuffle=True)
 
 test_loader = torch.utils.data.DataLoader(
-    datasets.MNIST('../data', train=False, transform=transforms.Compose([
-                        transforms.ToTensor(),
-                        transforms.Normalize((0.1307,), (0.3081,))
-                    ])),
+    datasets.MNIST(args.data_path, train=False,
+                   transform=transforms.Compose([
+                       transforms.Resize([224, 224]),
+                       transforms.ToTensor(),
+                       transforms.Normalize((0.1307,), (0.3081,)),
+                       transforms.Lambda(lambda x: x.repeat(1, 3, 1, 1))
+                   ])),
     batch_size=args.batch_size, shuffle=True)
 
 
 class Net(nn.Module):
     def __init__(self, n_class):
+        super(Net, self).__init__()
         self.cnnf = cnnf_torch.CNN_F(args.cnnf_weight)
         self.fc = nn.Linear(4096, args.n_class)
+
     def forward(self, x):
         x = self.cnnf(x)
         logit = self.fc(x)
@@ -88,12 +96,12 @@ model = Net(args.n_class).to(device)
 criterion = nn.CrossEntropyLoss()
 optimizer = optim.Adam(model.parameters())
 
-# for epoch in range(args.epoch):
-#     train(model, train_loader, optimizer, criterion)
-#     test(model, test_loader)
-for x, y in train_loader:
-    print(x.size(), y.size())
-    break
+for epoch in range(args.epoch):
+    train(model, train_loader, optimizer, criterion)
+    test(model, test_loader)
+# for x, y in train_loader:
+#     print(x.size(), y.size())  # [n, 1, 28, 28], [64]
+#     break
 
 
 log_file.flush()

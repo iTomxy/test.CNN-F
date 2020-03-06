@@ -12,6 +12,7 @@ parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
 parser.add_argument('--cnnf_weight', type=str,
                     default='/home/aistudio/data/data20371/vgg_net.mat',
                     help="CNN-F weights file path")
+parser.add_argument('--log_path', type=str, default="log")
 parser.add_argument('--batch_size', type=int, default=64)
 parser.add_argument('--n_class', type=int, default=10)
 parser.add_argument('--epoch', type=int, default=14)

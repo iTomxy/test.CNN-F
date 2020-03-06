@@ -4,6 +4,8 @@ Test the pre-trained CNN-F in TensorFlow/Pytorch with a simple classification mo
 
 Codes of CNN-F and pre-trained parameters are provided in [1].
 
+Analyses of the weight files are contained in *test.cnnf.ipynb* and *cnnf.pytorch.ipynb*.
+
 # Usage
 
 ## Tensorflow
@@ -13,6 +15,7 @@ Codes of CNN-F and pre-trained parameters are provided in [1].
 
 ## Pytorch
 
+- `python main_torch.py`
 
 # Data
 
@@ -25,12 +28,12 @@ MNIST, zooming into [224, 224, 3].
 - iter 0: 0.12269999995827675
 - iter 450: 0.9907000076770782
 
-# pytorch
-
-- epoch 
-
 ![accuracy](accuracy.png)
 ![loss](loss.png)
+
+## pytorch
+
+- 1 epoch: 0.98
 
 # Environment
 

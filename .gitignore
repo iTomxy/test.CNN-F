@@ -78,8 +78,8 @@ docs/_build/
 target/
 
 # Jupyter Notebook
-**/.ipynb_checkpoints
-**/*.ipynb
+.ipynb_checkpoints
+*.ipynb
 
 # pyenv
 .python-version
@@ -117,3 +117,5 @@ ENV/
 
 # for this repo
 log/
+!cnnf.pytorch.ipynb
+!test.cnnf.ipynb

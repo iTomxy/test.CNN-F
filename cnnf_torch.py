@@ -8,6 +8,8 @@ import torch.nn.functional as F
 """Ref:
 - https://zhuanlan.zhihu.com/p/29786939
 - https://github.com/pytorch/vision/blob/master/torchvision/models/alexnet.py
+- https://pytorch.org/docs/stable/nn.html#zeropad2d
+- https://github.com/tensorflow/docs/blob/r1.12/site/en/api_docs/python/tf/pad.md
 """
 
 
@@ -51,7 +53,7 @@ class CNN_F(nn.Module):
         self.seventh = nn.Sequential(
             make_conv(layers[17]),
             nn.ReLU(inplace=True),
-            nn.Dropout()
+            nn.Dropout(0.5)
         )
 
     def forward(self, x):
@@ -70,7 +72,6 @@ def make_conv(layer):
     tf: (n, h, w, C)
     ref:
     - https://github.com/pytorch/pytorch/blob/master/torch/nn/modules/conv.py#L329
-    - https://pytorch.org/docs/stable/nn.html#zeropad2d
     """
     layer = layer[0][0]
     # print("name:", layer[0])
@@ -147,9 +148,6 @@ def make_lrn(layer):
 
 
 def make_pool(layer):
-    """ref:
-    - https://pytorch.org/docs/stable/nn.html#zeropad2d
-    """
     layer = layer[0][0]
     # print("name:", layer[0])
     # print("type:", layer[1])

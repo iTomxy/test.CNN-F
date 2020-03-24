@@ -21,7 +21,7 @@ args = parser.parse_args()
 
 mnist = K.datasets.mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
-x_train, x_test = x_train / 255.0, x_test / 255.0
+x_train, x_test = x_train / 255.0, x_test / 255.0   # [n, 28, 28], [n]
 print("data shape:", type(x_train), x_train.shape, y_test.shape)
 
 # Add a channels dimension
@@ -44,7 +44,7 @@ class Net(K.Model):
 
 
 model = Net()
-criterion = K.losses.SparseCategoricalCrossentropy(from_logits=True)
+criterion = K.losses.SparseCategoricalCrossentropy(from_logits=True)  # `Sparse` for NOT one-hot
 optimizer = K.optimizers.Adam()
 
 train_loss = K.metrics.Mean(name='train_loss')
@@ -56,6 +56,7 @@ test_accuracy = K.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
 @tf.function
 def train_step(images, labels):
+    images = tf.image.resize(images, [224, 224])
     with tf.GradientTape() as tape:
         pred = model(images, True)
         loss = criterion(labels, pred)
@@ -68,6 +69,7 @@ def train_step(images, labels):
 
 @tf.function
 def test_step(images, labels):
+    images = tf.image.resize(images, [224, 224])
     pred = model(images)
     t_loss = loss_object(labels, pred)
 

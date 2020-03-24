@@ -73,7 +73,7 @@ def test_step(images, labels):
     images = tf.image.resize(images, [224, 224])
     images = tf.tile(images, tf.constant([1, 1, 1, 3]))
     pred = model(images)
-    t_loss = loss_object(labels, pred)
+    t_loss = criterion(labels, pred)
 
     test_loss(t_loss)
     test_accuracy(labels, pred)

@@ -75,11 +75,16 @@ def make_conv(layer, first=False):
     stride = layer[5][0]
     # print("stride:", stride)
 
-    conv = L.Conv2D(shape[3], shape[:2], strides=stride, padding="valid",
-                    kernel_initializer=tf.initializers.constant(k),
-                    bias_initializer=tf.initializers.constant(b))
     if first:
-        conv.input_shape = [224, 224, 3]
+        conv = L.Conv2D(shape[3], shape[:2], strides=stride, padding="valid",
+                        kernel_initializer=tf.initializers.constant(k),
+                        bias_initializer=tf.initializers.constant(b),
+                        input_shape=[224, 224, 3])
+    else:
+        conv = L.Conv2D(shape[3], shape[:2], strides=stride, padding="valid",
+                        kernel_initializer=tf.initializers.constant(k),
+                        bias_initializer=tf.initializers.constant(b))
+
 
     if np.sum(pad) > 0:
         padding = L.Lambda(lambda x: tf.pad(

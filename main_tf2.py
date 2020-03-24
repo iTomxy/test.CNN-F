@@ -22,7 +22,7 @@ args = parser.parse_args()
 mnist = K.datasets.mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 x_train, x_test = x_train / 255.0, x_test / 255.0   # [n, 28, 28], [n]
-print("data shape:", type(x_train), x_train.shape, y_test.shape)
+# print("data shape:", type(x_train), x_train.shape, y_test.shape)
 
 # Add a channels dimension
 x_train = x_train[..., tf.newaxis]
@@ -87,7 +87,7 @@ for epoch in range(args.epoch):
     test_accuracy.reset_states()
 
     for images, labels in train_ds:
-        print("image type:", type(images))
+        # print("image type:", type(images))  # EagerTensor
         train_step(images, labels)
 
     for test_images, test_labels in test_ds:

@@ -61,7 +61,7 @@ def test(model, loader):
 
 
 train_loader = torch.utils.data.DataLoader(
-    datasets.MNIST(args.data_path, train=True,  # download=True,
+    datasets.MNIST(args.data_path, train=True, download=True,
                    transform=transforms.Compose([
                        transforms.Resize([224, 224]),
                        transforms.ToTensor(),

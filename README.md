@@ -8,7 +8,7 @@ Analyses of the weight files are contained in *test.cnnf.ipynb* and *cnnf.pytorc
 
 # Usage
 
-## Tensorflow
+## Tensorflow 1.12
 
 - `python main.py`
 - `tensorboard --logdir log`
@@ -17,13 +17,17 @@ Analyses of the weight files are contained in *test.cnnf.ipynb* and *cnnf.pytorc
 
 - `python main_torch.py`
 
+## TensorFlow 2.1.0
+
+- `python main_tf2.py`
+
 # Data
 
 MNIST, zooming into [224, 224, 3].
 
 # Result
 
-## tensorflow
+## tensorflow 1.12
 
 - iter 0: 0.12269999995827675
 - iter 450: 0.9907000076770782

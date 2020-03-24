@@ -57,6 +57,7 @@ test_accuracy = K.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 @tf.function
 def train_step(images, labels):
     images = tf.image.resize(images, [224, 224])
+    images = tf.tile(images, tf.constant([1, 1, 1, 3]))
     with tf.GradientTape() as tape:
         pred = model(images, True)
         loss = criterion(labels, pred)
@@ -70,6 +71,7 @@ def train_step(images, labels):
 @tf.function
 def test_step(images, labels):
     images = tf.image.resize(images, [224, 224])
+    images = tf.tile(images, tf.constant([1, 1, 1, 3]))
     pred = model(images)
     t_loss = loss_object(labels, pred)
 

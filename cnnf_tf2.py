@@ -103,7 +103,7 @@ def make_lrn(layer):
     # print("bias:", param[1])
     # print("alpha:", param[2])
     # print("beta:", param[3])
-    return L.Lambda(lambda x: tf.K.local_response_normalization(
+    return L.Lambda(lambda x: tf.nn.local_response_normalization(
         x, depth_radius=param[0], bias=param[1], alpha=param[2], beta=param[3]))
 
 

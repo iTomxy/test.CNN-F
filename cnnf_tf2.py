@@ -57,7 +57,7 @@ class CNN_F(K.Model):
         x = self.drop6(x, training=training)
         x = self.seventh(x)
         x = self.drop7(x, training=training)
-        return tf.reshape(x, x.shape.as_list()[-1])
+        return tf.reshape(x, [-1, x.shape.as_list()[-1]])
 
 
 def make_conv(layer, first=False):

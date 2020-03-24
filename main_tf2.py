@@ -5,6 +5,7 @@ from tensorflow import keras as K
 from cnnf_tf2 import CNN_F
 
 
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
 parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
 parser.add_argument('--cnnf_weight', type=str,
                     default='/home/aistudio/data/data20371/vgg_net.mat',
@@ -15,7 +16,7 @@ parser.add_argument('--batch_size', type=int, default=32)
 parser.add_argument('--n_class', type=int, default=10)
 parser.add_argument('--epoch', type=int, default=14)
 args = parser.parse_args()
-os.system("clear")
+# os.system("clear")
 
 
 mnist = K.datasets.mnist

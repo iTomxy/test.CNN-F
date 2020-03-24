@@ -75,7 +75,7 @@ def make_conv(layer, first=False):
     stride = layer[5][0]
     # print("stride:", stride)
 
-    conv = L.Conv2D(shape[3], shape[:2], stride=stride, padding="valid",
+    conv = L.Conv2D(shape[3], shape[:2], strides=stride, padding="valid",
                     kernel_initializer=tf.initializers.constant(k),
                     bias_initializer=tf.initializers.constant(b))
     if first:
@@ -113,7 +113,7 @@ def make_pool(layer):
     pad=layer[5][0]
     # print("pad:", pad)
 
-    pool=L.MaxPool2D(pool_size=k_size, stride=stride, padding="valid")
+    pool=L.MaxPool2D(pool_size=k_size, strides=stride, padding="valid")
     if np.sum(pad) > 0:
         padding=L.Lambda(lambda x: tf.pad(
             x, [[0, 0], [pad[0], pad[1]], [pad[2], pad[3]], [0, 0]], "CONSTANT"))

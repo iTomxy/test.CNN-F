@@ -1,4 +1,5 @@
 import argparse
+import os
 import tensorflow as tf
 from tensorflow import keras as K
 from cnnf_tf2 import CNN_F
@@ -72,6 +73,7 @@ def test_step(images, labels):
     test_accuracy(labels, pred)
 
 
+os.system("clear")
 for epoch in range(args.epoch):
     # 在下一个epoch开始时，重置评估指标
     train_loss.reset_states()

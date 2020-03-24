@@ -63,8 +63,8 @@ class CNN_F(K.Model):
 def make_conv(layer, first=False):
     """if first layer, provide `input_shape=(h,w,c)`"""
     layer = layer[0][0]
-    print("name:", layer[0])
-    # print("type:", layer[1])
+    # print("name:", layer[0][0])
+    # print("type:", layer[1][0])
     k, b = layer[2][0]
     # b = b.flatten()
     # print("kernel:", k.shape, ", bias:", b.shape)
@@ -89,15 +89,15 @@ def make_conv(layer, first=False):
     if np.sum(pad) > 0:
         padding = L.Lambda(lambda x: tf.pad(
             x, [[0, 0], [pad[0], pad[1]], [pad[2], pad[3]], [0, 0]], "CONSTANT"))
-        conv = K.Sequential([padding, conv], name=layer[0])
+        conv = K.Sequential([padding, conv], name=layer[0][0])
 
     return conv
 
 
 def make_lrn(layer):
     layer = layer[0][0]
-    # print("name:", layer[0])
-    # print("type:", layer[1])
+    # print("name:", layer[0][0])
+    # print("type:", layer[1][0])
     param = layer[2][0]
     # print("local_size/depth_radius:", param[0])
     # print("bias:", param[1])
@@ -109,8 +109,8 @@ def make_lrn(layer):
 
 def make_pool(layer):
     layer=layer[0][0]
-    # print("name:", layer[0])
-    # print("type:", layer[1])
+    # print("name:", layer[0][0])
+    # print("type:", layer[1][0])
     # print("pool type:", layer[2])
     k_size=layer[3][0]
     stride=layer[4][0]
@@ -122,6 +122,6 @@ def make_pool(layer):
     if np.sum(pad) > 0:
         padding=L.Lambda(lambda x: tf.pad(
             x, [[0, 0], [pad[0], pad[1]], [pad[2], pad[3]], [0, 0]], "CONSTANT"))
-        pool=K.Sequential([padding, pool], name=layer[0])
+        pool=K.Sequential([padding, pool], name=layer[0][0])
 
     return pool

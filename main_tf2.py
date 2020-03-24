@@ -40,6 +40,7 @@ class Net(K.Model):
         return self.fc(self.cnnf(x, training=training))
 
 
+model = Net()
 criterion = K.losses.SparseCategoricalCrossentropy(from_logits=True)
 optimizer = K.optimizers.Adam()
 

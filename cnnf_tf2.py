@@ -63,7 +63,7 @@ class CNN_F(K.Model):
 def make_conv(layer, first=False):
     """if first layer, provide `input_shape=(h,w,c)`"""
     layer = layer[0][0]
-    # print("name:", layer[0])
+    print("name:", layer[0])
     # print("type:", layer[1])
     k, b = layer[2][0]
     # b = b.flatten()

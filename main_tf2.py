@@ -56,8 +56,6 @@ test_accuracy = K.metrics.SparseCategoricalAccuracy(name='test_accuracy')
 
 @tf.function
 def train_step(images, labels):
-    images = tf.image.resize(images, [224, 224])
-    images = tf.tile(images, tf.constant([1, 1, 1, 3]))
     with tf.GradientTape() as tape:
         pred = model(images, True)
         loss = criterion(labels, pred)
@@ -70,8 +68,6 @@ def train_step(images, labels):
 
 @tf.function
 def test_step(images, labels):
-    images = tf.image.resize(images, [224, 224])
-    images = tf.tile(images, tf.constant([1, 1, 1, 3]))
     pred = model(images)
     t_loss = criterion(labels, pred)
 
@@ -87,10 +83,14 @@ for epoch in range(args.epoch):
     test_accuracy.reset_states()
 
     for images, labels in train_ds:
+        images = tf.image.resize(images, [224, 224])
+        images = tf.tile(images, tf.constant([1, 1, 1, 3]))
         # print("image type:", type(images))  # EagerTensor
         train_step(images, labels)
 
     for test_images, test_labels in test_ds:
+        images = tf.image.resize(images, [224, 224])
+        images = tf.tile(images, tf.constant([1, 1, 1, 3]))
         test_step(test_images, test_labels)
 
     template = 'Epoch {}, Loss: {}, Accuracy: {}, Test Loss: {}, Test Accuracy: {}'

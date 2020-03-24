@@ -39,11 +39,15 @@ MNIST, zooming into [224, 224, 3].
 
 - 1 epoch: 0.98
 
+## tensorflow 2.1
+
+- 1 epoch: 0.9742
+
 # Environment
 
-- tensorflow 1.12.0
-- pytorch 1.4.0
-- cuda 9.0
+- tensorflow 1.12.0 / 2.1.0
+- pytorch 1.4.0, torchvision 0.5.0
+- cuda 9.0 / 10.1
 
 # Pre-trained Weights
 

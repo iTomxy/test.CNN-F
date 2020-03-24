@@ -5,7 +5,7 @@ from tensorflow import keras as K
 from cnnf_tf2 import CNN_F
 
 
-os.environ['TF_CPP_MIN_LOG_LEVEL'] = '3'
+os.environ['TF_CPP_MIN_LOG_LEVEL'] = "2"
 parser = argparse.ArgumentParser(description='PyTorch MNIST Example')
 parser.add_argument('--cnnf_weight', type=str,
                     default='/home/aistudio/data/data20371/vgg_net.mat',
@@ -22,7 +22,7 @@ args = parser.parse_args()
 mnist = K.datasets.mnist
 (x_train, y_train), (x_test, y_test) = mnist.load_data()
 x_train, x_test = x_train / 255.0, x_test / 255.0
-print(x_train.dtype, x_train.shape, y_test.shape)
+print("data shape:", x_train.dtype, x_train.shape, y_test.shape)
 
 # Add a channels dimension
 x_train = x_train[..., tf.newaxis]

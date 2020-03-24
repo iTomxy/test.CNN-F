@@ -88,10 +88,10 @@ for epoch in range(args.epoch):
         # print("image type:", type(images))  # EagerTensor
         train_step(images, labels)
 
-    for test_images, test_labels in test_ds:
+    for images, labels in test_ds:
         images = tf.image.resize(images, [224, 224])
         images = tf.tile(images, tf.constant([1, 1, 1, 3]))
-        test_step(test_images, test_labels)
+        test_step(images, labels)
 
     template = 'Epoch {}, Loss: {}, Accuracy: {}, Test Loss: {}, Test Accuracy: {}'
     print(template.format(epoch+1,

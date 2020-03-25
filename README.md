@@ -49,6 +49,8 @@ MNIST, zooming into [224, 224, 3].
 - pytorch 1.4.0, torchvision 0.5.0
 - cuda 9.0 / 10.1
 
+you may use docker: [tyloeng/dl](https://hub.docker.com/repository/docker/tyloeng/dl)
+
 # Pre-trained Weights
 
 [cnnf-vggf](https://pan.baidu.com/s/1zxB_cHcalM8xbmauTS6_Xg#list/path=%2F)

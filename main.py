@@ -13,7 +13,7 @@ parser.add_argument('--gpu_id', type=str, nargs='?', default="0")
 parser.add_argument('--gpu_frac', type=float, default=0.5,
                     help="fraction of gpu memory to use")
 parser.add_argument('--cnnf_weight', type=str,
-                    default='/usr/local/pre-trained/imagenet-vgg-f.mat',
+                    default='/home/dataset/vgg_net.mat',
                     help="CNN-F weights file path")
 parser.add_argument('--log_path', type=str, default="log")
 parser.add_argument('--batch_size', type=int, default=128)
@@ -67,7 +67,8 @@ def test(sess, model, dataset):
         image = transform(image)
         acc += sess.run(model.accuracy,
                        feed_dict={model.in_images: image,
-                                  model.in_labels: label})
+                                  model.in_labels: label,
+								  model.training: False})
 
     acc = acc * batch / n_total
     return acc
@@ -100,7 +101,7 @@ if __name__ == "__main__":
     sess = tf.Session(config=gpu_cfg)
 
     dataset = input_data.read_data_sets(
-        "/usr/local/dataset/MNIST/", one_hot=True)
+        "/home/dataset/MNIST/", one_hot=True)
     model = models.Clf(args)
 
     tf_writer = tf.summary.FileWriter(args.log_path, sess.graph)

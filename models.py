@@ -10,6 +10,7 @@ class Clf:
             "float32", [None, 224, 224, 3], name="input_images")
         self.in_labels = tf.placeholder(
             "float32", [None, args.n_class], name="input_labels")
+		self.training = tf.placeholder("bool", [], name="training")
 
         self.fc7, self.logit, self.pslab, self.accuracy = self._forward(args)
         self.loss_clf, self.loss_reg = self._add_loss(args)
@@ -27,7 +28,7 @@ class Clf:
         self.merged = tf.summary.merge_all()
 
     def _forward(self, args):
-        fc7 = cnnf.CNN_F(self.in_images, args.cnnf_weight)
+        fc7 = cnnf.CNN_F(self.in_images, args.cnnf_weight, self.training)
         dim_fc7 = fc7.shape.as_list()[-1]
 
         # pseudo label branch
@@ -65,7 +66,8 @@ class Clf:
             [self.train_op, self.merged,
                 self.loss_clf, self.loss_reg, self.accuracy],
             feed_dict={self.in_images: images,
-                       self.in_labels: labels})
+                       self.in_labels: labels,
+					   self.training: True})
         return summary, l_clf, l_reg, acc
 
 

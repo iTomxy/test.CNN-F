@@ -10,7 +10,7 @@ class Clf:
             "float32", [None, 224, 224, 3], name="input_images")
         self.in_labels = tf.placeholder(
             "float32", [None, args.n_class], name="input_labels")
-		self.training = tf.placeholder("bool", [], name="training")
+        self.training = tf.placeholder("bool", [], name="training")
 
         self.fc7, self.logit, self.pslab, self.accuracy = self._forward(args)
         self.loss_clf, self.loss_reg = self._add_loss(args)

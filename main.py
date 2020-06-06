@@ -113,15 +113,16 @@ if __name__ == "__main__":
 
     # var_list = tf.trainable_variables()
     # print(var_list)  # tf.Variable 'logit/weight:0' shape=(4096, 10) dtype=float32_ref>
-    W = tf.transpose(tf.get_variable("logit/weight:0"))  # [c, d]
+    W = [v for v in tf.trainable_variables() if v.name == "logit/weight:0"][0]
+    W = tf.transpose(W)  # [c, d]
     fea_list = []
     Y = []
     for i in range(3):
         image, label = dataset.test.next_batch(args.batch_size)
-        fea = sess.run(model.fc7, feed_dict={model.in_images: image
+        fea = sess.run(model.fc7, feed_dict={model.in_images: transform(image),
                                              model.training: False})
         fea_list.append(fea)
-        Y.append(np.argmax(label, 1))
+        Y.extend(np.argmax(label, 1).tolist())
     # add W
     fea_list.append(sess.run(W))
     F = np.vstack(fea_list)
@@ -132,11 +133,16 @@ if __name__ == "__main__":
     # F = (F - x_min) / (x_max - x_min)
     F_sample, F_w = F[:-10], F[-10:]
     fig = plt.figure()
-    plt.title("T-SNE")
-    plt.scatter(F_sample[:, 0], F_sapme[:, 1], s=25, c=Y, marker='+', cmap="coolwarm")
-    plt.scatter(F_w[:, 0], F_w[:, 1], s=40, c=range(10), marker='o', cmap="coolwarm")
+    plt.title("t-sne of sample")
+    plt.scatter(F_sample[:, 0], F_sample[:, 1], s=25, c=Y, marker='+', cmap="coolwarm")
     plt.show()
-    fig.savefig("log/tsne.png")
+    fig.savefig("log/tsne.sample.png")
+
+    fig = plt.figure()
+    plt.title("t-sne of W")
+    plt.scatter(F_w[:, 0], F_w[:, 1], s=40, c=list(range(10)), marker='o', cmap="coolwarm")
+    plt.show()
+    fig.savefig("log/tsne.w.png")
 
     sess.close()
 

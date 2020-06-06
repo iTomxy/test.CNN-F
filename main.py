@@ -2,10 +2,12 @@ import argparse
 import os
 import time
 import tensorflow as tf
+from tensorflow.examples.tutorials.mnist import input_data
 import numpy as np
 from scipy.ndimage import zoom
+from sklearn.manifold import TSNE
+import matplotlib.pyplot as plt
 import models
-from tensorflow.examples.tutorials.mnist import input_data
 
 
 parser = argparse.ArgumentParser(description='test pre-trained CNN-F')
@@ -44,6 +46,9 @@ if not os.path.exists(args.log_path):
     os.makedirs(args.log_path)
 log_file_path = os.path.join(args.log_path, "log.{}".format(timestamp()))
 log_file = open(log_file_path, "a")
+for k, v in args._get_kwargs():
+    log_file.write("{}: {}\n".format(k, v))
+log_file.write("begin time: {}\n".format(time.asctime()))
 
 
 def transform(img):
@@ -75,8 +80,6 @@ def test(sess, model, dataset):
 
 
 def train(sess, tf_writer, model, dataset):
-    log_file.write("begin time: {}\n".format(time.asctime()))
-
     for epoch in range(args.max_iter):
         image, label = dataset.train.next_batch(args.batch_size)
         image = transform(image)
@@ -89,8 +92,6 @@ def train(sess, tf_writer, model, dataset):
             acc = test(sess, model, dataset)
             print("epoch:", epoch, ", acc:", acc)
             log_file.write("acc: {}\n".format(acc))
-
-    log_file.write("end time: {}\n".format(time.asctime()))
 
 
 if __name__ == "__main__":
@@ -108,8 +109,14 @@ if __name__ == "__main__":
     sess.run(tf.global_variables_initializer())
     sess.run(tf.local_variables_initializer())
     os.system("clear")
-    train(sess, tf_writer, model, dataset)
+    # train(sess, tf_writer, model, dataset)
+    
+    var_list = tf.trainable_variables()
+    print(var_list)
+    # tsne = manifold.TSNE(n_components=n_components, init='pca', random_state=0)
 
     sess.close()
 
+log_file.write("end time: {}\n".format(time.asctime()))
+log_file.flush()
 log_file.close()

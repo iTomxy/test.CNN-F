@@ -33,6 +33,8 @@ class Clf:
 
         # pseudo label branch
         logit = _fc(fc7, dim_fc7, args.n_class, "logit", bias=False)
+        #fc7 = _fc(fc7, dim_fc7, 2, "feature")
+        #logit = _fc(fc7, 2, args.n_class, "logit", bias=False)
         pslab = tf.nn.softmax(logit, name="pseudo_label")
 
         # evaluate
@@ -86,7 +88,7 @@ def _fc(x, num_in, num_out, var_scope, relu=False, bias=True, stddev=0.01):
         if bias:
             biases = tf.get_variable(
                 'bias', initializer=tf.constant(0.1, shape=[num_out]))
-            act = act + b
+            act = act + biases
         # act = tf.nn.xw_plus_b(x, weights, biase)
 
         if relu == True:

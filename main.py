@@ -64,16 +64,16 @@ def transform(img):
 
 
 def test(sess, model, dataset):
-    n_total = dataset.test.num_examples # 10k
+    n_total = dataset.test.num_examples  # 10k
     batch = 100
     acc = 0
     for i in range(n_total // batch):
         image, label = dataset.test.next_batch(batch)
         image = transform(image)
         acc += sess.run(model.accuracy,
-                       feed_dict={model.in_images: image,
-                                  model.in_labels: label,
-								  model.training: False})
+                        feed_dict={model.in_images: image,
+                                   model.in_labels: label,
+                                   model.training: False})
 
     acc = acc * batch / n_total
     return acc
@@ -109,11 +109,40 @@ if __name__ == "__main__":
     sess.run(tf.global_variables_initializer())
     sess.run(tf.local_variables_initializer())
     os.system("clear")
-    # train(sess, tf_writer, model, dataset)
-    
-    var_list = tf.trainable_variables()
-    print(var_list)
-    # tsne = manifold.TSNE(n_components=n_components, init='pca', random_state=0)
+    train(sess, tf_writer, model, dataset)
+
+    # var_list = tf.trainable_variables()
+    # print(var_list)  # tf.Variable 'logit/weight:0' shape=(4096, 10) dtype=float32_ref>
+    W = [v for v in tf.trainable_variables() if v.name == "logit/weight:0"][0]
+    W = tf.transpose(W)  # [c, d]
+    fea_list = []
+    Y = []
+    for i in range(3):
+        image, label = dataset.test.next_batch(args.batch_size)
+        fea = sess.run(model.fc7, feed_dict={model.in_images: transform(image),
+                                             model.training: False})
+        fea_list.append(fea)
+        Y.extend(np.argmax(label, 1).tolist())
+    # add W
+    fea_list.append(sess.run(W))
+    F = np.vstack(fea_list)
+
+    tsne = TSNE(n_components=2, init="pca", random_state=0)
+    F = tsne.fit_transform(F)
+    # x_min, x_max = np.min(F, 0), np.max(F, 0)
+    # F = (F - x_min) / (x_max - x_min)
+    F_sample, F_w = F[:-10], F[-10:]
+    fig = plt.figure()
+    plt.title("t-sne of sample")
+    plt.scatter(F_sample[:, 0], F_sample[:, 1], s=25, c=Y, marker='+', cmap="coolwarm")
+    plt.show()
+    fig.savefig("log/tsne.sample.png")
+
+    fig = plt.figure()
+    plt.title("t-sne of W")
+    plt.scatter(F_w[:, 0], F_w[:, 1], s=40, c=list(range(10)), marker='o', cmap="coolwarm")
+    plt.show()
+    fig.savefig("log/tsne.w.png")
 
     sess.close()
 

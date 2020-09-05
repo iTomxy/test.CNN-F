@@ -32,7 +32,9 @@ class Clf:
         dim_fc7 = fc7.shape.as_list()[-1]
 
         # pseudo label branch
-        logit = _fc(fc7, dim_fc7, args.n_class, "logit")
+        logit = _fc(fc7, dim_fc7, args.n_class, "logit", bias=False)
+        #fc7 = _fc(fc7, dim_fc7, 2, "feature")
+        #logit = _fc(fc7, 2, args.n_class, "logit", bias=False)
         pslab = tf.nn.softmax(logit, name="pseudo_label")
 
         # evaluate
@@ -46,10 +48,11 @@ class Clf:
     def _add_loss(self, args):
         # cross entropy
         with tf.name_scope("xent"):
-            loss_xent = tf.nn.softmax_cross_entropy_with_logits(labels=self.in_labels,
-                                                                logits=self.logit)
-            loss_xent = tf.reduce_sum(loss_xent, axis=-1)
-            loss_clf = tf.reduce_mean(loss_xent)
+            #loss_xent = tf.nn.softmax_cross_entropy_with_logits(labels=self.in_labels,
+            #                                                    logits=self.logit)
+            #loss_xent = tf.reduce_sum(loss_xent, axis=-1)
+            #loss_clf = tf.reduce_mean(loss_xent)
+            loss_clf = tf.nn.l2_loss(self.logit - self.in_labels)
 
         # weight decay
         var_list = [v for v in tf.trainable_variables()]
@@ -76,14 +79,17 @@ helper functions
 """
 
 
-def _fc(x, num_in, num_out, var_scope, relu=False, stddev=0.01):
+def _fc(x, num_in, num_out, var_scope, relu=False, bias=True, stddev=0.01):
     """fully connected layer"""
     with tf.variable_scope(var_scope) as scope:
         weights = tf.get_variable('weight', initializer=tf.truncated_normal(
             [num_in, num_out], stddev=stddev))
-        biases = tf.get_variable(
-            'bias', initializer=tf.constant(0.1, shape=[num_out]))
-        act = tf.nn.xw_plus_b(x, weights, biases, name=scope.name)
+        act = tf.matmul(x, weights, name=scope.name)
+        if bias:
+            biases = tf.get_variable(
+                'bias', initializer=tf.constant(0.1, shape=[num_out]))
+            act = act + biases
+        # act = tf.nn.xw_plus_b(x, weights, biase)
 
         if relu == True:
             relu = tf.nn.relu(act)

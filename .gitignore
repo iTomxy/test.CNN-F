@@ -112,7 +112,7 @@ ENV/
 .mypy_cache/
 
 # tensorflow
-**/events.out.tfevents.*
+events.out.tfevents.*
 
 
 # for this repo
